@@ -7,9 +7,7 @@ var router = new Router();
 
 export default {
   data() {
-    return {
-      urlBaseSuporte: ""
-    };
+    return {};
   },
   methods: {
     getUrlBaseSuporte() {
@@ -26,18 +24,20 @@ export default {
       localStorage.removeItem("jsessionid");
     },
     fetchLogin(matricula, senha) {
-      this.urlBaseSuporte = "https://suporte-graduandoavexado.herokuapp.com/";
-      let url =
-        this.urlBaseSuporte + `login?matricula=${matricula}&senha=${senha}`;
+      let urlBaseSuporte = "https://suporte-graduandoavexado.herokuapp.com/";
+      let url = urlBaseSuporte + `login?matricula=${matricula}&senha=${senha}`;
       return fetch(url).then(res => res.json());
     },
     fetchComponentes(jsessionid) {
-      let url = this.urlBaseSuporte + `componentes/${jsessionid}`;
+      let urlBaseSuporte = "https://suporte-graduandoavexado.herokuapp.com/";
+      let url = urlBaseSuporte + `componentes/${jsessionid}`;
+      console.log(url);
       return fetch(url).then(res => res.json());
     },
     fetchComponente(codigoComponente, turma, periodo, jsessionid) {
+      let urlBaseSuporte = "https://suporte-graduandoavexado.herokuapp.com/";
       let url =
-        this.urlBaseSuporte +
+        urlBaseSuporte +
         `componente/${codigoComponente}/${turma}/${periodo}/${jsessionid}`;
       return fetch(url).then(res => res.json());
     }
