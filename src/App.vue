@@ -5,8 +5,15 @@
 </template>
 
 <script>
+import Login from "./components/Login";
+import Home from "./components/Home";
+
 export default {
-  name: 'App'
+  name: 'app',
+  components: {
+      Login,
+      Home
+  }
 }
 </script>
 

@@ -3,7 +3,6 @@
 		<div class="column" style="max-width: 450px">
 			<br><br><br><br><br>
 			<h2 class="ui grey image header">
-				<i class="user plus icon"></i>
 				<div class="content">
 					Login
 				</div>
@@ -13,13 +12,13 @@
 				<div class="ui stacked segment">
 					<div class="field">
 						<div class="ui labeled icon input">
-							<div class="ui label">Matricula&nbsp;&nbsp;</div>
+							<div class="ui label">Matricula</div>
 							<input value="116211149" type="text" placeholder="Digite a sua matricula" v-model="profile.matricula">
 						</div>
 					</div>
 					<div class="field">
 						<div class="ui labeled icon input">
-							<div class="ui label">Senha</div>
+							<div class="ui label">Senha&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
 							<input value="geovane404" type="password" placeholder="Digite sua senha" v-model="profile.password">
 						</div>
 					</div>
