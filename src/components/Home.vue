@@ -17,7 +17,9 @@
                         <td id="codigo">{{ item.codigo || '-' }}</td>
                         <td id="periodo">{{ item.periodo || '-' }}</td>
                         <td id="turma">{{ item.turma || '-' }}</td>
-                        <td id="btnNotas"><button class="positive ui button" v-on:click="toggle();notas(item)">Abrir</button></td>
+                        <td id="btnNotas">
+                            <sui-button primary v-on:click="toggle();notas(item)">Abrir</sui-button>
+                        </td>
                     </tr>
                 </tbody>
             </table>

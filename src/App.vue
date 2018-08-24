@@ -1,5 +1,7 @@
 <template>
   <div id="app">
+      <img src="../static/student.png" style="height:300px">
+      <br><br>
     <router-view/>
   </div>
 </template>
