@@ -14,13 +14,13 @@
 					<div class="field">
 						<div class="ui labeled icon input">
 							<div class="ui label">Matricula&nbsp;&nbsp;</div>
-							<input type="text" placeholder="Digite a sua matricula" v-model="profile.matricula">
+							<input value="116211149" type="text" placeholder="Digite a sua matricula" v-model="profile.matricula">
 						</div>
 					</div>
 					<div class="field">
 						<div class="ui labeled icon input">
 							<div class="ui label">Senha</div>
-							<input type="password" placeholder="Digite sua senha" v-model="profile.password">
+							<input value="geovane404" type="password" placeholder="Digite sua senha" v-model="profile.password">
 						</div>
 					</div>
 					<div :hidden="!this.error" class="ui mini red message"> {{errorMsg}} </div>
@@ -35,20 +35,19 @@
 </template>
 
 <script>
-/* eslint-disable */
 import Vue from "vue";
 import Router from "vue-router";
+import Service from "../Service";
 Vue.use(Router);
 var router = new Router();
 export default {
-  name: "login-admin",
+  name: "login",
   data() {
     return {
       profile: {
         matricula: "",
         password: ""
       },
-      urlBase: "https://graduando-avexado.herokuapp.com/login",
       error: false,
       errorMsg: ""
     };
@@ -57,11 +56,16 @@ export default {
     login() {
       let matricula = this.profile.matricula || "-";
       let senha = this.profile.password || "-";
-      fetch(this.urlBase + `?matricula=${matricula}&senha=${senha}`)
-        .then(d => d.json())
-        .then(a => {
-          console.log(a);
-        });
+      Service.methods.fetchLogin(matricula, senha).then(a => {
+        if (a.erro) {
+          this.errorMsg = a.erro;
+          this.error = true;
+        } else {
+          let jsessionid = a.id;
+          Service.methods.saveJsessionId(jsessionid);
+          this.$router.push("/home");
+        }
+      });
     }
   }
 };
