@@ -1,7 +1,9 @@
 <template>
     <div id="register" class="ui middle aligned center aligned grid">
 		<div class="column" style="max-width: 900px">
-            <table class="ui single line table">
+            <button class="ui negative right floated button" v-on:click="sair()">Sair</button>
+            <br><br>
+            <table class="ui single line unstackable table">
                 <thead>
                     <tr>
                         <th>Disciplina</th>
@@ -9,6 +11,7 @@
                         <th>Periodo</th>
                         <th>Turma</th>
                         <th>Notas</th>
+                        <th>Monitorando</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -17,9 +20,13 @@
                         <td id="codigo">{{ item.codigo || '-' }}</td>
                         <td id="periodo">{{ item.periodo || '-' }}</td>
                         <td id="turma">{{ item.turma || '-' }}</td>
-                        <td id="btnNotas">
+                        <td :id="item.codigo">
                             <sui-button primary v-on:click="toggle();notas(item)">Abrir</sui-button>
                         </td>
+                        <td v-if="monitorando[item.codigo]">
+                            <i class="green big asterisk loading icon"></i>
+                        </td>
+                        <td v-else><i class="red big times icon"></i></td>
                     </tr>
                 </tbody>
             </table>
@@ -27,7 +34,7 @@
                 <sui-modal-header>Notas</sui-modal-header>
                 <sui-modal-content>
                     <sui-modal-description>
-                        <table class="ui table">
+                        <table class="ui unstackable tablet">
                                 <thead>
                                     <tr>
                                         <th class="" v-for="(item, index) in avaliacoes" :key="index">Nota {{item.id}}</th>
@@ -54,26 +61,19 @@
             <button class="ui button">
                 Monitorar
             </button>
-            <button class="ui button">
+            <button class="ui button" v-on:click="monitorar">
                 <i class="play icon"></i>
             </button>
-            <button class="ui button">
+            <button class="ui button" v-on:click="stop">
                 <i class="stop icon"></i>
             </button>
         </div>
-        <div class="ui selection dropdown">
-                <input type="hidden" name="gender">
-                <i class="dropdown icon"></i>
-                <div class="default text">Tempo</div>
-                <div class="menu">
-                    <div class="item" data-value="0">10s</div>
-                    <div class="item" data-value="1">20s</div>
-                    <div class="item" data-value="2">30s</div>
-                    <div class="item" data-value="3">60s</div>
-                    <div class="item" data-value="4">120s</div>
-                    <div class="item" data-value="5">300s</div>
-                </div>
-            </div>
+        <!-- <sui-dropdown
+            placeholder="Tempo"
+            selection
+            :options="opcoesTempo"
+            v-model="tempo">
+        </sui-dropdown> -->
         <sui-button negative @click.native="toggle">
 					Fechar
 				</sui-button>
@@ -85,7 +85,6 @@
 </template>
 
 <script>
-
 import SuiVue from "semantic-ui-vue";
 import Vue from "vue";
 import Router from "vue-router";
@@ -100,57 +99,37 @@ export default {
   data() {
     return {
       componentes: [],
-      tempo: null,
       open: false,
-      currentInterval: null,
+      itemAtual: null,
+      monitorando: {},
       avaliacoes: [],
-      resultados: {},
-      opcoesTempo: [
-        {
-          text: "2",
-          value: "2"
-        },
-        {
-          text: "45s",
-          value: "45"
-        },
-        {
-          text: "1m",
-          value: "60"
-        },
-        {
-          text: "2m",
-          value: "120"
-        },
-        {
-          text: "5m",
-          value: "300"
-        }
-      ]
+      resultados: {}
     };
   },
   created() {
     let jsessionid = Service.methods.getJsessionId();
-    console.log(jsessionid);
     Service.methods.fetchComponentes(jsessionid).then(a => {
-      console.log(a);
       this.componentes = a;
     });
   },
   methods: {
+    sair() {
+      Service.methods.deleteJsessionId();
+      this.$router.push("/");
+    },
     toggle() {
       this.open = !this.open;
     },
-    print() {
-      console.log(this.componentes);
-    },
     notas(item) {
+      this.itemAtual = item;
       this.avaliacoes = [];
       this.resultados = {};
+
       let codigo = item.codigo;
       let turma = item.turma;
       let periodo = item.periodo;
       let jsessionid = Service.methods.getJsessionId();
+
       Service.methods
         .fetchComponente(codigo, turma, periodo, jsessionid)
         .then(a => {
@@ -164,20 +143,13 @@ export default {
           this.resultados.parcial = a[num_notas].media_parcial;
           this.resultados.e_final = a[num_notas + 1].exame_final;
           this.resultados.m_final = a[num_notas + 2].media_final;
-          console.log(this.avaliacoes);
-          console.log(this.resultados);
         });
     },
-    monitorar(item) {
-      console.log("Começou Monitorar");
-      let intervalo = this.tempo * 1000;
-      let notas = this.notas;
-      this.currentInterval = setInterval(function() {
-        notas(item);
-      }, intervalo);
+    monitorar() {
+      this.monitorando[this.itemAtual.codigo] = true;
     },
     stop() {
-      clearInterval(this.currentInterval);
+      this.monitorando[this.itemAtual.codigo] = false;
     }
   }
 };

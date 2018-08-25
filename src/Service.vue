@@ -31,7 +31,6 @@ export default {
     fetchComponentes(jsessionid) {
       let urlBaseSuporte = "https://suporte-graduandoavexado.herokuapp.com/";
       let url = urlBaseSuporte + `componentes/${jsessionid}`;
-      console.log(url);
       return fetch(url).then(res => res.json());
     },
     fetchComponente(codigoComponente, turma, periodo, jsessionid) {
