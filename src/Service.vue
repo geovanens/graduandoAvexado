@@ -1,11 +1,9 @@
 <script>
 import Vue from "vue";
-import Router from "vue-router";
-
-Vue.use(Router);
-var router = new Router();
+import router from "./router";
 
 export default {
+  name: "Service",
   data() {
     return {};
   },

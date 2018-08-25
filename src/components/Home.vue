@@ -92,14 +92,12 @@
 <script>
 import SuiVue from "semantic-ui-vue";
 import Vue from "vue";
-import Router from "vue-router";
 import Service from "../Service";
-import { setInterval, clearInterval } from "timers";
 
-Vue.use(Router);
+
 Vue.use(SuiVue);
+import router from "../router";
 
-var router = new Router();
 export default {
   name: "home",
   data() {
@@ -120,7 +118,7 @@ export default {
     console.log("home");
     let jsessionid = Service.methods.getJsessionId();
     if (!jsessionid) {
-      this.$router.push("/");
+      router.push("/");
     }
     Service.methods.fetchComponentes(jsessionid).then(a => {
       this.componentes = a;
@@ -130,7 +128,7 @@ export default {
   methods: {
     sair() {
       localStorage.clear();
-      this.$router.push("/");
+      router.push("/");
     },
     resetIcones() {
       let aux = {};
