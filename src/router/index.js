@@ -24,11 +24,6 @@ export default new Router({
       path: '/home',
       name: 'Home',
       component: Home
-    },
-    {
-      path: '*',
-      name: 'undefined',
-      template: '<div>404!</div>'
     }
   ]
 })

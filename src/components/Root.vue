@@ -15,7 +15,7 @@
             <li>Assim que estiver pronto clique no botão abaixo para proseguir.</li>
           </ul>
         </div>
-        <a href="/login"><div class="ui positive button">Efetuar Login</div></a>
+        <button class="ui positive button" @click="goToLogin()">Efetuar Login</button>
       </div>
   </div>  
 </template>
@@ -30,10 +30,16 @@ Vue.use(Router);
 Vue.use(SuiVue);
 
 var router = new Router();
+
 export default {
-  name: "index",
+  name: "root",
   data() {
     return {};
+  },
+  methods: {
+    goToLogin() {
+      this.$router.push("/login");
+    }
   }
 };
 </script>

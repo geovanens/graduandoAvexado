@@ -3,9 +3,9 @@
 import Vue from 'vue'
 import App from './App'
 import SuiVue from 'semantic-ui-vue'
-import router from './router/index.js'
+import router from './router'
 
-//Vue.config.productionTip = false
+Vue.config.productionTip = false
 Vue.use(SuiVue);
 
 new Vue({

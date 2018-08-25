@@ -61,7 +61,8 @@ export default {
         } else {
           let jsessionid = a.id;
           Service.methods.saveJsessionId(jsessionid);
-          this.$router.push("/home");
+					this.$router.push("/home");
+					console.log("logou");
         }
       });
     }
