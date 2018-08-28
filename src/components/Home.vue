@@ -120,10 +120,13 @@ export default {
     if (!jsessionid) {
       router.push("/");
     }
-    Service.methods.fetchComponentes(jsessionid).then(a => {
-      this.componentes = a;
-      this.resetIcones();
-    });
+    else {
+      Service.methods.fetchComponentes(jsessionid).then(a => {
+        this.componentes = a;
+        this.resetIcones();
+      });
+    }
+    
   },
   methods: {
     sair() {
