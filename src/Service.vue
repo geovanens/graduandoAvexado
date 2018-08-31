@@ -8,35 +8,56 @@ export default {
     return {};
   },
   methods: {
-    getUrlBaseSuporte() {
-      return this.urlBaseSuporte;
+    logado() {
+        let url = this.urlBase() + "/validaID";
+        let jsessionid = this.getJsessionId();
+        fetch(url, {
+            headers: {
+                jsessionid: jsessionid
+            }
+        }).then(res => res.json()).then(d => {return d[0]});
+    },
+    urlBase(url) {
+      //return "https://suporte-graduandoavexado.herokuapp.com";
+      return "http://127.0.0.1:5000";
     },
     saveJsessionId(jsessionid) {
       localStorage.setItem("jsessionid", jsessionid);
     },
     getJsessionId() {
       let jsessionid = localStorage.getItem("jsessionid");
+      console.log("ID in service " + jsessionid);
       return jsessionid;
     },
     deleteJsessionId() {
       localStorage.removeItem("jsessionid");
     },
     fetchLogin(matricula, senha) {
-      let urlBaseSuporte = "https://suporte-graduandoavexado.herokuapp.com/";
-      let url = urlBaseSuporte + `login?matricula=${matricula}&senha=${senha}`;
-      return fetch(url).then(res => res.json());
+      let url = this.urlBase() + "/login";
+      console.log(url);
+      return fetch(url, {
+        headers: {
+          matricula: matricula,
+          senha: senha
+        }
+      }).then(res => res.json());
     },
     fetchComponentes(jsessionid) {
-      let urlBaseSuporte = "https://suporte-graduandoavexado.herokuapp.com/";
-      let url = urlBaseSuporte + `componentes/${jsessionid}`;
-      return fetch(url).then(res => res.json());
+      let url = this.urlBase() + "/componentes";
+      return fetch(url, {
+        headers: {
+          jsessionid: jsessionid
+        }
+      }).then(res => res.json());
     },
     fetchComponente(codigoComponente, turma, periodo, jsessionid) {
-      let urlBaseSuporte = "https://suporte-graduandoavexado.herokuapp.com/";
       let url =
-        urlBaseSuporte +
-        `componente/${codigoComponente}/${turma}/${periodo}/${jsessionid}`;
-      return fetch(url).then(res => res.json());
+        this.urlBase() + `/notas/${codigoComponente}/${turma}/${periodo}`;
+      return fetch(url, {
+        headers: {
+          jsessionid: jsessionid
+        }
+      }).then(res => res.json());
     }
   }
 };

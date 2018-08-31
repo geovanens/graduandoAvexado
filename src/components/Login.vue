@@ -49,7 +49,9 @@ export default {
     };
   },
   created() {
-    if (Service.methods.getJsessionId()) router.push("/home");
+    if (Service.methods.getJsessionId()) {
+        router.push("/home")
+    }
   },
   methods: {
     login() {
@@ -62,7 +64,7 @@ export default {
         } else {
           let jsessionid = a.id;
           Service.methods.saveJsessionId(jsessionid);
-          router.push({name: 'Home'});
+          router.push('/home');
           console.log("logou");
         }
       });

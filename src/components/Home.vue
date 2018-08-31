@@ -94,7 +94,6 @@ import SuiVue from "semantic-ui-vue";
 import Vue from "vue";
 import Service from "../Service";
 
-
 Vue.use(SuiVue);
 import router from "../router";
 
@@ -115,18 +114,16 @@ export default {
     };
   },
   created() {
-    console.log("home");
     let jsessionid = Service.methods.getJsessionId();
-    if (!jsessionid) {
-      router.push("/");
-    }
-    else {
+    if (!Service.methods.logado(jsessionid)) {
+      localStorage.clear();
+      router.push("/login");
+    } else {
       Service.methods.fetchComponentes(jsessionid).then(a => {
         this.componentes = a;
         this.resetIcones();
       });
     }
-    
   },
   methods: {
     sair() {
@@ -206,8 +203,12 @@ export default {
                   if (JSON.stringify(compare) != JSON.stringify(recuperado)) {
                     that.icone[codigo] = "green check icon";
                     if (!notificou) {
-                      let changes = new Audio("../../static/have_changes.ogg");
-                      changes.play();
+                      responsiveVoice.speak(
+                        "Existem alterações nas suas notas.",
+                        "Brazilian Portuguese Female"
+                      );
+                      /* let changes = new Audio("../../static/have_changes.ogg");
+                      changes.play(); */
                       notificou = true;
                     }
                     //alert("Sem alterações em " + comp.disciplina);
