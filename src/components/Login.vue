@@ -26,6 +26,9 @@
 					<button class="ui fluid button" v-on:click.stop.prevent="login()">
 						Entrar
 					</button>
+          <!-- <button class="ui fluid button" v-on:click.stop.prevent="verificar()">
+						verificar
+					</button> -->
 				</div>
 			</form>
 		</div>
@@ -49,9 +52,11 @@ export default {
     };
   },
   created() {
-    if (Service.methods.getJsessionId()) {
+    Service.methods.logado().then(dados => {
+      if (dados[0] === true) {
         router.push("/home")
-    }
+      }
+    })
   },
   methods: {
     login() {
@@ -65,9 +70,11 @@ export default {
           let jsessionid = a.id;
           Service.methods.saveJsessionId(jsessionid);
           router.push('/home');
-          console.log("logou");
         }
       });
+    },
+    verificar() {
+      Service.methods.logado().then(dados => console.log(dados));
     }
   }
 };

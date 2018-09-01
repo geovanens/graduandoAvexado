@@ -114,16 +114,19 @@ export default {
     };
   },
   created() {
-    let jsessionid = Service.methods.getJsessionId();
-    if (!Service.methods.logado(jsessionid)) {
-      localStorage.clear();
-      router.push("/login");
-    } else {
-      Service.methods.fetchComponentes(jsessionid).then(a => {
-        this.componentes = a;
-        this.resetIcones();
-      });
-    }
+    Service.methods.logado().then(dados => {
+      if (dados[0] === false) {
+        console.log("Não está logado. Estamos limpando e redirecionando!");
+        localStorage.clear();
+        router.push("/login");
+      } else {
+        let jsessionid = Service.methods.getJsessionId();
+        Service.methods.fetchComponentes(jsessionid).then(a => {
+          this.componentes = a;
+          this.resetIcones();
+        });
+      }
+    });
   },
   methods: {
     sair() {
@@ -191,6 +194,7 @@ export default {
               let codigo = comp.codigo;
               let turma = comp.turma;
               let periodo = comp.periodo;
+              let disciplina = comp.disciplina;
               let jsessionid = Service.methods.getJsessionId();
 
               Service.methods
@@ -202,13 +206,16 @@ export default {
                   compare[codigo] = result;
                   if (JSON.stringify(compare) != JSON.stringify(recuperado)) {
                     that.icone[codigo] = "green check icon";
+                    console.log("AQUI");
+                    console.log(that.icone);
                     if (!notificou) {
+                      /* let fala = "Existem Alterações.";
                       responsiveVoice.speak(
-                        "Existem alterações nas suas notas.",
+                        fala,
                         "Brazilian Portuguese Female"
-                      );
-                      /* let changes = new Audio("../../static/have_changes.ogg");
-                      changes.play(); */
+                      ); */
+                      let changes = new Audio("../../static/definite.ogg");
+                      changes.play();
                       notificou = true;
                     }
                     //alert("Sem alterações em " + comp.disciplina);

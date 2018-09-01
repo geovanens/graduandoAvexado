@@ -11,11 +11,11 @@ export default {
     logado() {
         let url = this.urlBase() + "/validaID";
         let jsessionid = this.getJsessionId();
-        fetch(url, {
+        return fetch(url, {
             headers: {
                 jsessionid: jsessionid
             }
-        }).then(res => res.json()).then(d => {return d[0]});
+        }).then(res => res.json());
     },
     urlBase(url) {
       //return "https://suporte-graduandoavexado.herokuapp.com";
@@ -26,7 +26,6 @@ export default {
     },
     getJsessionId() {
       let jsessionid = localStorage.getItem("jsessionid");
-      console.log("ID in service " + jsessionid);
       return jsessionid;
     },
     deleteJsessionId() {
@@ -34,7 +33,6 @@ export default {
     },
     fetchLogin(matricula, senha) {
       let url = this.urlBase() + "/login";
-      console.log(url);
       return fetch(url, {
         headers: {
           matricula: matricula,
