@@ -18,8 +18,8 @@ export default {
         }).then(res => res.json());
     },
     urlBase(url) {
-      //return "https://suporte-graduandoavexado.herokuapp.com";
-      return "http://127.0.0.1:5000";
+      return "https://suporte-graduandoavexado.herokuapp.com";
+      /* return "http://127.0.0.1:5000"; */
     },
     saveJsessionId(jsessionid) {
       localStorage.setItem("jsessionid", jsessionid);
